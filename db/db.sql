@@ -39,3 +39,25 @@ CREATE TABLE user_hash_roles (
     PRIMARY KEY (id_user, id_rol)
 );
 
+
+/*nuevo*/
+
+CREATE TABLE estancos (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100),
+  address varchar (200),
+  telefono varchar (50)  
+);
+
+use drinknow;
+ALTER TABLE users ADD estanco_id INT;
+ALTER TABLE users ADD FOREIGN KEY (estanco_id) REFERENCES estancos(id);
+
+CREATE TABLE categorias (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(200),
+  description text not null,
+  image varchar (250),
+  estanco_id INT, 
+  FOREIGN KEY (estanco_id) REFERENCES estancos(id)
+);

@@ -39,7 +39,8 @@ module.exports = {
                     email: myUser.email,
                     address: myUser.address,
                     session_token: `JWT ${token}`,
-                    Roles: JSON.parse(myUser.Roles)
+                    Roles: myUser.Roles
+
                 }
 
                 return res.status(201).json({
@@ -86,6 +87,7 @@ module.exports = {
                     success: false,
                     message: 'Se generó un error con el registro del rol de usuario',
                     error: err
+                    
                 });
             }
 
@@ -94,11 +96,60 @@ module.exports = {
                 message: 'Se realizó el registro correctamente',
                 data: {
                     id: user.id,
+                    name: user.name,
+                    address: user.address,
                     session_token: user.session_token
+
                 }
             });
         });
     });
+},
+
+   AllUsers(req, res) {
+    User.findAll((err, users) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                message: 'Error al obtener usuarios',
+                error: err
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Usuarios obtenidos exitosamente',
+            data: users
+        });
+    });
+
+},
+
+deleteUser(req, res) {
+   const id = req.body.id;
+
+    User.deleteById(id, (err, result) => {
+        if (err) {
+            if (err.kind === 'not_found') {
+                return res.status(404).json({
+                    success: false,
+                    message: `Usuario con id ${id} no encontrado.`
+                });
+            } else {
+                return res.status(500).json({
+                    success: false,
+                    message: `Error al eliminar usuario con id ${id}.`,
+                    error: err
+                });
+            }
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: `Usuario con id ${id} eliminado exitosamente.`
+        });
+    });
 }
+
 
 }

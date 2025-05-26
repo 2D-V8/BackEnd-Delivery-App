@@ -143,4 +143,45 @@ User.create = async (user, result) => {
 
 }
 
+User.findAll = (result) => {
+    const sql = `
+        SELECT 
+            id,
+            email,
+            name
+        FROM users
+    `;
+
+    db.query(sql, (err, users) => {
+        if (err) {
+            console.log('Error al obtener usuarios:', err);
+            result(err, null);
+        } else {
+            console.log('Usuarios obtenidos:', users);
+            result(null, users);
+        }
+    });
+};
+
+User.deleteById = (id, result) => {
+    const sql = `DELETE FROM users WHERE id = ?`;
+
+    db.query(sql, [id], (err, res) => {
+        if (err) {
+            console.log('Error al eliminar usuario:', err);
+            result(err, null);
+            return;
+        }
+
+        if (res.affectedRows === 0) {
+            // No se encontró usuario con ese id
+            result({ kind: 'not_found' }, null);
+            return;
+        }
+
+        console.log('Usuario eliminado con id:', id);
+        result(null, res);
+    });
+};
+
 module.exports = User;
