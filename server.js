@@ -10,9 +10,13 @@ const multer = require('multer')
 Importamos Rutas
 */
 const userRoutes = require('./routes/userRoutes');
+const categoriesRoutes = require('./routes/categoryRoutes');
+const EstancosRoutes = require('./routes/EstancosRoutes');
+const comprasRoutes = require('./routes/comprasRoutes');
 
 
 const port = process.env.PORT || 3000;
+
 
 // función que se ejecuta antes de la petición 
 app.use(logger('dev'));
@@ -29,7 +33,7 @@ app.disable('x-powered-by');
 // Puerto
 app.set('port', port);
 
-unload = multer({
+upload = multer({
   storage: multer.memoryStorage()
 
 });
@@ -37,10 +41,12 @@ unload = multer({
 Llamado Rutas
 */
 userRoutes(app);
-
+categoriesRoutes(app, upload);
+EstancosRoutes(app);
+comprasRoutes(app);
 
 // Iniciar servidor
-server.listen(port, '192.168.18.172', () => {
+server.listen(port, '192.168.1.15', () => {
   console.log(`Aplicación de NodeJs iniciada en el puerto ${port}`);
 });
 

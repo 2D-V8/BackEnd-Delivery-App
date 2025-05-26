@@ -39,7 +39,7 @@ module.exports = {
                     email: myUser.email,
                     address: myUser.address,
                     session_token: `JWT ${token}`,
-                    Roles: JSON.parse(myUser.Roles)
+                    Roles: myUser.Roles
                 }
 
                 return res.status(201).json({
@@ -86,6 +86,7 @@ module.exports = {
                     success: false,
                     message: 'Se generó un error con el registro del rol de usuario',
                     error: err
+                    
                 });
             }
 
@@ -94,7 +95,10 @@ module.exports = {
                 message: 'Se realizó el registro correctamente',
                 data: {
                     id: user.id,
+                    name: user.name,
+                    address: user.address,
                     session_token: user.session_token
+
                 }
             });
         });
